@@ -35,7 +35,12 @@ library
   ghc-options: -Wall
   build-depends:
     base >= 4.4 && < 5,
-    lens >= 3.9 && < 4
+    lens >= 3.9 && < 4,
+    profunctors >= 3.2 && < 4,
+    semigroupoids >= 3.0.2 && < 4
+  exposed-modules:
+    Control.Zipper
+    Control.Zipper.Internal
 
 test-suite doctests
   type:    exitcode-stdio-1.0
