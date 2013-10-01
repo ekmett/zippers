@@ -151,7 +151,7 @@ instance Monoid (Jacket i a) where
 
 -- | Construct a 'Jacket' from a 'Bazaar'
 jacketIns :: Bazaar (Indexed i) a b t -> Jacket i a
-jacketIns (Bazaar bz) = runAccessor $ bz $ Indexed (\i -> Accessor #. Leaf i)
+jacketIns (Bazaar bz) = getConst $ bz $ Indexed (\i -> Const #. Leaf i)
 {-# INLINE jacketIns #-}
 
 ------------------------------------------------------------------------------
