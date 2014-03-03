@@ -35,9 +35,9 @@ library
   ghc-options: -Wall
   build-depends:
     base >= 4.4 && < 5,
-    lens >= 3.10 && < 4,
-    profunctors >= 3.2 && < 4,
-    semigroupoids >= 3.0.2 && < 4
+    lens >= 4 && < 5,
+    profunctors >= 4 && < 5,
+    semigroupoids >= 4 && < 5
   exposed-modules:
     Control.Zipper
     Control.Zipper.Internal
