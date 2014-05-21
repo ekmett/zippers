@@ -1,0 +1,52 @@
+name:          zippers-examples
+category:      Data, Lenses
+version:       0.1
+license:       BSD3
+cabal-version: >= 1.8
+license-file:  LICENSE
+author:        Niklas Haas
+maintainer:    Edward A. Kmett <ekmett@gmail.com>
+stability:     provisional
+homepage:      http://github.com/ekmett/lens/
+bug-reports:   http://github.com/ekmett/lens/issues
+copyright:     Copyright (C) 2012 Edward A. Kmett
+synopsis:      Lenses, Folds, Traversals and Zippers
+description:   Brainfuck Example
+
+build-type:    Simple
+tested-with:   GHC == 7.4.1
+
+source-repository head
+  type: git
+  location: git://github.com/ekmett/zippers.git
+
+flag brainfuck
+  default: True
+
+executable lens-brainfuck
+  if !flag(brainfuck)
+    buildable: False
+
+  build-depends:
+    base,
+    lens,
+    zippers,
+    free       >= 3.0,
+    bytestring,
+    mtl        >= 2.0.1 && < 2.2,
+    streams    >= 3.0
+  main-is: Brainfuck.hs
+
+executable lens-brainfuck-final
+  if !flag(brainfuck)
+    buildable: False
+
+  build-depends:
+    base,
+    lens,
+    zippers,
+    free       >= 3.0,
+    bytestring,
+    mtl        >= 2.0.1 && < 2.2,
+    streams    >= 3.0
+  main-is: BrainfuckFinal.hs
