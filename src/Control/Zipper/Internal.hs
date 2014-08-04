@@ -406,7 +406,7 @@ upward (Zipper (Snoc h _ t o p j k) _ _ q i x) = Zipper h t o p j $ k $ recompre
 -- | Jerk the 'Zipper' one 'tooth' to the 'rightward' within the current 'Lens' or 'Traversal'.
 --
 -- Attempts to move past the start of the current 'Traversal' (or trivially, the current 'Lens')
--- will return 'Nothing'.
+-- will return 'mzero'.
 --
 -- >>> isNothing $ zipper "hello" & rightward
 -- True
@@ -426,7 +426,7 @@ rightward (Zipper h t o p i a) = mover p (Leaf i a) mzero $ \q j b -> return $ Z
 -- | Jerk the 'Zipper' 'leftward' one 'tooth' within the current 'Lens' or 'Traversal'.
 --
 -- Attempts to move past the end of the current 'Traversal' (or trivially, the current 'Lens')
--- will return 'Nothing'.
+-- will return 'mzero'.
 --
 -- >>> isNothing $ zipper "hello" & leftward
 -- True
@@ -560,7 +560,7 @@ teeth (Zipper _ _ _ p _ _) = pathsize p
 -- | Move the 'Zipper' horizontally to the element in the @n@th position in the
 -- current level, absolutely indexed, starting with the 'farthest' 'leftward' as @0@.
 --
--- This returns 'Nothing' if the target element doesn't exist.
+-- This returns 'mzero' if the target element doesn't exist.
 --
 -- @'jerkTo' n ≡ 'jerks' 'rightward' n '.' 'farthest' 'leftward'@
 --
