@@ -420,7 +420,7 @@ upward (Zipper (Snoc h _ t o p j k) _ _ q i x) = Zipper h t o p j $ k $ recompre
 -- >>> rezip $ zipper (1,2) & fromWithin both & tug rightward & focus .~ 3
 -- (1,3)
 rightward :: MonadPlus m => h :> a:@i -> m (h :> a:@i)
-rightward (Zipper h t o p i a) = mover p (Leaf i a) mzero $ \q j b -> return $ Zipper h t (o + 1) q j b where
+rightward (Zipper h t o p i a) = mover p (Leaf i a) mzero $ \q j b -> return $ Zipper h t (o + 1) q j b
 {-# INLINE rightward #-}
 
 -- | Jerk the 'Zipper' 'leftward' one 'tooth' within the current 'Lens' or 'Traversal'.
