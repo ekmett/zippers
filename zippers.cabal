@@ -36,8 +36,8 @@ library
   build-depends:
     base >= 4.4 && < 5,
     lens >= 4 && < 5,
-    profunctors >= 4 && < 5,
-    semigroupoids >= 4 && < 5
+    profunctors >= 4 && < 6,
+    semigroupoids >= 4 && < 6
   exposed-modules:
     Control.Zipper
     Control.Zipper.Internal
