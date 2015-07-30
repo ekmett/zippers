@@ -15,6 +15,10 @@
 {-# LANGUAGE Trustworthy #-}
 #endif
 
+#ifndef MIN_VERSION_base
+#define MIN_VERSION_base(x,y,z) 1
+#endif
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Control.Zipper.Internal
@@ -42,11 +46,14 @@ import Control.Lens.Lens
 import Control.Lens.Setter
 import Control.Lens.Traversal
 import Control.Lens.Type
-import Data.Foldable
 import Data.Functor.Apply
 import Data.Maybe
 import Data.Monoid
 import Data.Profunctor.Unsafe
+
+#if !(MIN_VERSION_base(4,8,0))
+import Data.Foldable
+#endif
 
 -- $setup
 -- >>> :set -XNoOverloadedStrings
