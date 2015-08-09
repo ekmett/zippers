@@ -1,7 +1,7 @@
 zippers
 ===
 
-[![Build Status](https://secure.travis-ci.org/ekmett/zippers.png?branch=master)](http://travis-ci.org/ekmett/zippers)
+[![Hackage](https://img.shields.io/hackage/v/zippers.svg)](https://hackage.haskell.org/package/zippers) [![Build Status](https://secure.travis-ci.org/ekmett/zippers.png?branch=master)](http://travis-ci.org/ekmett/zippers
 
 Zippers are a way of accessing and manipulating data deep within a structure. This library uses Lenses and Traversals from the lens library to do this effectively.
 
