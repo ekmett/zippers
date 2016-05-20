@@ -33,7 +33,7 @@ executable lens-brainfuck
     zippers,
     free       >= 3.0,
     bytestring,
-    mtl        >= 2.0.1 && < 2.2,
+    mtl        >= 2.0.1 && < 2.3,
     streams    >= 3.0
   main-is: Brainfuck.hs
 
@@ -47,6 +47,6 @@ executable lens-brainfuck-final
     zippers,
     free       >= 3.0,
     bytestring,
-    mtl        >= 2.0.1 && < 2.2,
+    mtl        >= 2.0.1 && < 2.3,
     streams    >= 3.0
   main-is: BrainfuckFinal.hs
