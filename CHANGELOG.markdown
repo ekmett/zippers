@@ -1,4 +1,4 @@
-next
+0.2.2
 -----
 * Fix compilation of tests with `stack`
 
