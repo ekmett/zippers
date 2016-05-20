@@ -1,6 +1,6 @@
 name:          zippers
 category:      zippers
-version:       0.2
+version:       0.2.1
 license:       BSD3
 cabal-version: >= 1.10
 license-file:  LICENSE
@@ -60,7 +60,7 @@ benchmark zipper
   type:             exitcode-stdio-1.0
   main-is:          zipper.hs
   default-language: Haskell2010
-  ghc-options:      -w -O2 -threaded -fdicts-cheap -funbox-strict-fields
+  ghc-options:      -O2 -threaded -fdicts-cheap -funbox-strict-fields
   hs-source-dirs:   benchmarks
   build-depends:
     base,
