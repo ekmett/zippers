@@ -282,7 +282,7 @@ movel :: Path i a -> Jacket i a -> r -> (Path i a -> i -> a -> r) -> r
 movel p0 c0 kn kp = go p0 c0 where
   go Start _ = kn
   go (ApR m _ _ li l q) r
-    | nullRight l = go q (Ap m False False li l Pure)
+    | nullRight l = go q (Ap m False False li Pure r)
     | otherwise   = startr (ApL m False False li q r) l kn kp
   go (ApL m _ _ li p r) l = go p (Ap m False False li l r)
 {-# INLINE movel #-}
@@ -292,7 +292,7 @@ mover :: Path i a -> Jacket i a -> r -> (Path i a -> i -> a -> r) -> r
 mover p0 c0 kn kp = go p0 c0 where
   go Start _ = kn
   go (ApL m _ _ li q r) l
-    | nullLeft r  = go q (Ap m False False li Pure r)
+    | nullLeft r  = go q (Ap m False False li l Pure)
     | otherwise   = startl (ApR m False False li l q) r kn kp
   go (ApR m _ _ li l p) r = go p (Ap m False False li l r)
 {-# INLINE mover #-}
