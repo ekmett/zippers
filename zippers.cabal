@@ -22,6 +22,7 @@ extra-source-files:
   CHANGELOG.markdown
   HLint.hs
   README.markdown
+  Warning.hs
   travis/cabal-apt-install
   travis/config
 
