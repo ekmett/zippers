@@ -31,7 +31,7 @@ source-repository head
 flag brainfuck
   default: True
 
-executable lens-brainfuck
+executable zippers-brainfuck
   if !flag(brainfuck)
     buildable: False
 
@@ -45,7 +45,7 @@ executable lens-brainfuck
     streams    >= 3.0
   main-is: Brainfuck.hs
 
-executable lens-brainfuck-final
+executable zippers-brainfuck-final
   if !flag(brainfuck)
     buildable: False
 
