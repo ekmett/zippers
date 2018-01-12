@@ -48,7 +48,7 @@ import Control.Lens.Traversal
 import Control.Lens.Type
 import Data.Functor.Apply
 import Data.Maybe
-import Data.Monoid
+import Data.Monoid (Monoid(..), Last(..))
 import Data.Profunctor.Unsafe
 
 #if !(MIN_VERSION_base(4,8,0))
