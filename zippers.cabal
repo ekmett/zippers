@@ -11,8 +11,15 @@ homepage:      http://github.com/ekmett/zippers/
 bug-reports:   http://github.com/ekmett/zippers/issues
 copyright:     Copyright (C) 2013 Edward A. Kmett
 synopsis:      Traversal based zippers
-description:   Traversal based zippers
+description:   Traversal based zippers.
 build-type:    Custom
+tested-with:   GHC == 7.4.2
+             , GHC == 7.6.3
+             , GHC == 7.8.4
+             , GHC == 7.10.3
+             , GHC == 8.0.2
+             , GHC == 8.2.2
+             , GHC == 8.4.1
 
 extra-source-files:
   .ghci
