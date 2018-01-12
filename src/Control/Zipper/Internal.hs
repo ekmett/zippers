@@ -161,8 +161,10 @@ instance Monoid (Jacket i a) where
   mempty = Pure
   {-# INLINE mempty #-}
 
+#if !(MIN_VERSION_base(4,11,0))
   mappend = (<>)
   {-# INLINE mappend #-}
+#endif
 
 -- | Construct a 'Jacket' from a 'Bazaar'
 jacketIns :: Bazaar (Indexed i) a b t -> Jacket i a
