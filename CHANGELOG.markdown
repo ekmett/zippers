@@ -1,3 +1,7 @@
+next
+----
+* Add `Semigroup` instance for `Jacket`.
+
 0.2.4
 -----
 * Support `doctest-0.12`

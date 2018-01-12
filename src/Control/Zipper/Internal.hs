@@ -55,6 +55,10 @@ import Data.Profunctor.Unsafe
 import Data.Foldable
 #endif
 
+#if !(MIN_VERSION_base(4,11,0))
+import Data.Semigroup (Semigroup(..))
+#endif
+
 -- $setup
 -- >>> :set -XNoOverloadedStrings
 -- >>> import Control.Lens
@@ -148,12 +152,16 @@ instance TraversableWithIndex i (Jacket i) where
     go Pure                = pure Pure
   {-# INLINE itraverse #-}
 
+instance Semigroup (Jacket i a) where
+  l <> r = Ap (size l + size r) (nullLeft l && nullLeft r) (nullRight r && nullRight l) (maximal l <> maximal r) l r
+  {-# INLINE (<>) #-}
+
 -- | This is an illegal 'Monoid'.
 instance Monoid (Jacket i a) where
   mempty = Pure
   {-# INLINE mempty #-}
 
-  mappend l r = Ap (size l + size r) (nullLeft l && nullLeft r) (nullRight r && nullRight l) (maximal l <> maximal r) l r
+  mappend = (<>)
   {-# INLINE mappend #-}
 
 -- | Construct a 'Jacket' from a 'Bazaar'
