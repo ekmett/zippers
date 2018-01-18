@@ -1,5 +1,5 @@
-next
-----
+0.2.5
+-----
 * Add `Semigroup` instance for `Jacket`.
 
 0.2.4
