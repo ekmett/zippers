@@ -63,7 +63,7 @@ test-suite doctests
   default-language: Haskell2010
   build-depends:
     base,
-    doctest >= 0.11.1 && < 0.15,
+    doctest >= 0.11.1 && < 0.16,
     zippers
   ghc-options: -Wall -threaded
   hs-source-dirs: tests
