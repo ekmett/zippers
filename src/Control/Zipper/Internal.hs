@@ -185,7 +185,7 @@ instance Functor (Flow i b) where
 
 instance Apply (Flow i b) where
   (<.>) = (<*>)
-  {- INLINE (<.>) #-}
+  {-# INLINE (<.>) #-}
 
 -- | This is an illegal 'Applicative'.
 instance Applicative (Flow i b) where
