@@ -24,6 +24,7 @@ tested-with:   GHC == 7.4.2
              , GHC == 8.2.2
              , GHC == 8.4.4
              , GHC == 8.6.1
+extra-source-files: bf-examples/*.bf
 
 source-repository head
   type: git
@@ -45,6 +46,7 @@ executable zippers-brainfuck
     mtl        >= 2.0.1 && < 2.3,
     streams    >= 3.0
   main-is: Brainfuck.hs
+  hs-source-dirs: .
 
 executable zippers-brainfuck-final
   if !flag(brainfuck)
@@ -59,3 +61,4 @@ executable zippers-brainfuck-final
     mtl        >= 2.0.1 && < 2.3,
     streams    >= 3.0
   main-is: BrainfuckFinal.hs
+  hs-source-dirs: .
