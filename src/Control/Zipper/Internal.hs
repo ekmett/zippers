@@ -49,11 +49,12 @@ import Control.Lens.Traversal
 import Control.Lens.Type
 import Data.Functor.Apply
 import Data.Maybe
-import Data.Monoid (Monoid(..), Last(..))
+import Data.Monoid (Last(..))
 import Data.Profunctor.Unsafe
 
 #if !(MIN_VERSION_base(4,8,0))
 import Data.Foldable
+import Data.Monoid (Monoid(..))
 #endif
 
 #if !(MIN_VERSION_base(4,11,0))
