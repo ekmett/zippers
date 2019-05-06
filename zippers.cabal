@@ -1,6 +1,6 @@
 name:          zippers
 category:      zippers
-version:       0.2.5
+version:       0.3
 license:       BSD3
 cabal-version: >= 1.10
 license-file:  LICENSE
@@ -51,6 +51,7 @@ library
   ghc-options: -Wall
   build-depends:
     base >= 4.5 && < 5,
+    fail == 4.9.*,
     lens >= 4 && < 5,
     profunctors >= 4 && < 6,
     semigroups >= 0.16 && < 1,

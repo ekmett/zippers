@@ -38,6 +38,7 @@ module Control.Zipper.Internal where
 import Control.Applicative
 import Control.Category ((>>>))
 import Control.Monad
+import qualified Control.Monad.Fail as Fail
 import Control.Lens.Getter
 import Control.Lens.Indexed
 import Control.Lens.Internal.Context
@@ -536,14 +537,26 @@ farthest f = go where
 --
 -- >>> fmap rezip $ zipper "silly" & within traverse >>= jerks rightward 3 <&> focus .~ 'k'
 -- "silky"
-jerks :: Monad m => (a -> m a) -> Int -> a -> m a
+jerks :: Fail.MonadFail m => (a -> m a) -> Int -> a -> m a
 jerks f n0
-  | n0 < 0    = fail "jerks: negative jerk count"
+  | n0 < 0    = \_ -> fail "jerks: negative jerk count"
   | otherwise = go n0
   where
     go 0 a = return a
     go n a = f a >>= go (n - 1)
 {-# INLINE jerks #-}
+
+-- | 'jerksError' is Like 'jerks', but it uses 'error' instead of 'fail' when
+-- the supplied 'Int' is negative. This allows 'jerksError' to have a 'Monad'
+-- constraint instead of the less general 'MonadFail'.
+jerksError :: Monad m => (a -> m a) -> Int -> a -> m a
+jerksError f n0
+  | n0 < 0    = \_ -> error "jerksError: negative jerk count"
+  | otherwise = go n0
+  where
+    go 0 a = return a
+    go n a = f a >>= go (n - 1)
+{-# INLINE jerksError #-}
 
 -- | Returns the number of siblings at the current level in the 'Zipper'.
 --
@@ -591,9 +604,12 @@ teeth (Zipper _ _ _ p _ _) = pathsize p
 -- Just "now working"
 jerkTo :: MonadPlus m => Int -> (h :> a:@i) -> m (h :> a:@i)
 jerkTo n z = case compare k n of
-  LT -> jerks rightward (n - k) z
+  -- We use jerksError here instead of jerks to avoid incurring a useless
+  -- MonadFail constraint (as we ensure that jerksError is never called with
+  -- a negative Int argument).
+  LT -> jerksError rightward (n - k) z
   EQ -> return z
-  GT -> jerks leftward (k - n) z
+  GT -> jerksError leftward (k - n) z
   where k = tooth z
 {-# INLINE jerkTo #-}
 

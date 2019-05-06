@@ -1,3 +1,7 @@
+0.3 [????.??.??]
+----------------
+* `jerks` now has a `MonadFail` constraint instead of just `Monad`.
+
 0.2.5
 -----
 * Add `Semigroup` instance for `Jacket`.
