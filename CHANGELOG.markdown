@@ -1,4 +1,4 @@
-0.3 [????.??.??]
+0.3 [2019.05.10]
 ----------------
 * `jerks` now has a `MonadFail` constraint instead of just `Monad`.
 
