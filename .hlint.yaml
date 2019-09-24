@@ -1,0 +1,4 @@
+- arguments: [--cpp-define=HLINT, --cpp-ansi]
+
+- ignore: {name: Use fmap}
+- ignore: {name: Use lambda-case}
