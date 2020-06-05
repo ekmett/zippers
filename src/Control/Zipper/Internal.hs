@@ -19,6 +19,12 @@
 #define MIN_VERSION_base(x,y,z) 1
 #endif
 
+#ifdef __GLASGOW_HASKELL__
+#if __GLASGOW_HASKELL__ <= 800 && __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE AllowAmbiguousTypes #-}
+#endif
+#endif
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Control.Zipper.Internal
