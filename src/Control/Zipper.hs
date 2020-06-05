@@ -62,6 +62,11 @@ module Control.Zipper
   -- ** Lateral Movement
   , leftward, rightward
   , leftmost, rightmost
+  -- ** General Movement
+  , ZipperDirection(..)
+  , UniformZipper()
+  , pull
+  , ipull
   -- ** Movement Combinators
   , tug
   , tugs

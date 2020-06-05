@@ -483,6 +483,63 @@ rightmost :: a :> b:@i -> a :> b:@i
 rightmost (Zipper h _ _ p i a) = startr Start (recompress p i a) (error "rightmost: bad Jacket structure") (\q -> Zipper h (offset q) 0 q)
 {-# INLINE rightmost #-}
 
+data ZipperDirection = ZLeft | ZRight | ZUp | ZDown
+  deriving (Show, Read, Eq, Ord)
+
+-- | A 'Zipper' where all the indexes and values are of type @i@ and @a@.
+class UniformZipper i a h where
+  maybeUpward :: MonadPlus m => h :> a:@i -> (forall h'. h' :> a:@i -> m r) -> m r
+
+instance UniformZipper i a Top where
+  maybeUpward _ _ = mzero
+
+instance (Ord i, UniformZipper i a h) => UniformZipper i a (Zipper h i a) where
+  maybeUpward z k = k (upward z)
+
+-- | Move in any direction and pass the result to a continuation.
+--
+-- This is useful when you need to act on a zipper based on user input, and
+-- therefore can't specify what the result zipper type would be. Instead, it is
+-- passed to a continuation that can take any (uniform) zipper type. Typically,
+-- the continuation could call this same function again, e.g. in a REPL.
+--
+-- The first parameter is a 'Traversal' for the downward direction.
+--
+-- Note that this only works on @'UniformZipper' Int@.
+pull
+  :: forall h a m r
+   . (UniformZipper Int a h, MonadPlus m)
+  => LensLike' (Indexing (Bazaar' (Indexed Int) a)) a a
+  -> ZipperDirection
+  -> h :>> a
+  -> (forall h'. h' :>> a -> m r)
+  -> m r
+pull trav = ipull (indexing trav)
+
+-- | Move in any direction and pass the result to a continuation.
+--
+-- This is useful when you need to act on a zipper based on user input, and
+-- therefore can't specify what the result zipper type would be. Instead, it is
+-- passed to a continuation that can take any (uniform) zipper type. Typically,
+-- the continuation could call this same function again, e.g. in a REPL.
+--
+-- The first parameter is an 'IndexedTraversal' for the downward direction.
+--
+-- Note that this only works on 'UniformZipper'.
+ipull
+  :: forall h i a m r
+   . (Ord i, UniformZipper i a h, MonadPlus m)
+  => AnIndexedTraversal' i a a
+  -> ZipperDirection
+  -> h :> a:@i
+  -> (forall h'. h' :> a:@i -> m r)
+  -> m r
+ipull itrav op z k = case op of
+  ZLeft -> leftward z >>= k
+  ZRight -> rightward z >>= k
+  ZUp -> maybeUpward z k
+  ZDown -> iwithin itrav z >>= k
+
 -- | This allows you to safely 'tug' 'leftward' or 'tug' 'rightward' on a
 -- 'Zipper'. This will attempt the move, and stay where it was if it fails.
 --
