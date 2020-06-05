@@ -487,8 +487,8 @@ data ZipperDirection = ZLeft | ZRight | ZUp | ZDown
   deriving (Show, Read, Eq, Ord)
 
 -- | A 'Zipper' where all the indexes and values are of type @i@ and @a@.
-class UniformZipper i a h where
-  maybeUpward :: MonadPlus m => h :> a:@i -> (forall h'. h' :> a:@i -> m r) -> m r
+class (Zipped h a ~ a, Zipping h a) => UniformZipper i a h where
+  maybeUpward :: MonadPlus m => h :> a:@i -> (forall h'. UniformZipper i a h' => h' :> a:@i -> m r) -> m r
 
 instance UniformZipper i a Top where
   maybeUpward _ _ = mzero
@@ -512,7 +512,7 @@ pull
   => LensLike' (Indexing (Bazaar' (Indexed Int) a)) a a
   -> ZipperDirection
   -> h :>> a
-  -> (forall h'. h' :>> a -> m r)
+  -> (forall h'. UniformZipper Int a h' => h' :>> a -> m r)
   -> m r
 pull trav = ipull (indexing trav)
 
@@ -532,7 +532,7 @@ ipull
   => AnIndexedTraversal' i a a
   -> ZipperDirection
   -> h :> a:@i
-  -> (forall h'. h' :> a:@i -> m r)
+  -> (forall h'. UniformZipper i a h' => h' :> a:@i -> m r)
   -> m r
 ipull itrav op z k = case op of
   ZLeft -> leftward z >>= k
