@@ -346,7 +346,8 @@ data Top
 -- unpacked and stored in 'Coil' form. Only one value of type @_ ':>' _@ exists
 -- at any particular time for any particular 'Zipper'.
 
-data Zipper h i a = Ord i => Zipper !(Coil h i a) Int !Int !(Path i a) i a
+data Zipper h i a where
+  Zipper :: Ord i => !(Coil h i a) -> Int -> !Int -> !(Path i a) -> i -> a -> Zipper h i a
 
 -- Top :>> Map String Int :> Int :@ String :>> Bool
 
@@ -383,7 +384,7 @@ type instance Zipped (Zipper h i a) s = Zipped h a
 #ifndef HLINT
 data Coil t i a where
   Coil :: Coil Top Int a
-  Snoc :: Ord i => !(Coil h j s) -> AnIndexedTraversal' i s a -> Int -> !Int -> !(Path j s) -> j -> (Jacket i a -> s) -> Coil (Zipper h j s) i a
+  Snoc :: (Ord i, Ord j) => !(Coil h j s) -> AnIndexedTraversal' i s a -> Int -> !Int -> !(Path j s) -> j -> (Jacket i a -> s) -> Coil (Zipper h j s) i a
 #endif
 
 -- | This 'Lens' views the current target of the 'Zipper'.
