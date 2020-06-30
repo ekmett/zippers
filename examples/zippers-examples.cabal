@@ -2,7 +2,7 @@ name:          zippers-examples
 category:      Data, Lenses
 version:       0.1
 license:       BSD3
-cabal-version: >= 1.8
+cabal-version: >= 1.10
 license-file:  LICENSE
 author:        Niklas Haas
 maintainer:    Edward A. Kmett <ekmett@gmail.com>
@@ -49,6 +49,7 @@ executable zippers-brainfuck
     streams    >= 3.0
   main-is: Brainfuck.hs
   hs-source-dirs: .
+  default-language: Haskell2010
 
 executable zippers-brainfuck-final
   if !flag(brainfuck)
@@ -64,3 +65,4 @@ executable zippers-brainfuck-final
     streams    >= 3.0
   main-is: BrainfuckFinal.hs
   hs-source-dirs: .
+  default-language: Haskell2010
