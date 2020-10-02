@@ -19,8 +19,8 @@ main = defaultMain
       , bench "zipper"            $ nf zipTraverseRezip   ['a'..'z']
       ]
   , bgroup "downward"
-      [ bench "downward _1"       $ nf downwardAndRezip1 (['a'..'z'],['z'..'a'])
-      , bench "fromWithin"        $ nf downwardAndRezip2 (['a'..'z'],['z'..'a'])
+      [ bench "downward _1"       $ nf downwardAndRezip1 (['a'..'z'],['z','y'..'a'])
+      , bench "fromWithin"        $ nf downwardAndRezip2 (['a'..'z'],['z','y'..'a'])
       ]
   ]
 
