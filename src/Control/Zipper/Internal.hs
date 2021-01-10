@@ -65,8 +65,7 @@ import Data.Semigroup (Semigroup(..))
 -- >>> :set -XNoOverloadedStrings
 -- >>> import Control.Lens
 -- >>> import Data.Char
-
-{-# ANN module "HLint: ignore Use foldl" #-}
+-- >>> import Data.Maybe (isNothing)
 
 ------------------------------------------------------------------------------
 -- * Jacket
