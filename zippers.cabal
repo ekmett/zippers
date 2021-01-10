@@ -12,7 +12,7 @@ bug-reports:   http://github.com/ekmett/zippers/issues
 copyright:     Copyright (C) 2013 Edward A. Kmett
 synopsis:      Traversal based zippers
 description:   Traversal based zippers.
-build-type:    Custom
+build-type:    Simple
 tested-with:   GHC == 7.4.2
              , GHC == 7.6.3
              , GHC == 7.8.4
@@ -31,17 +31,10 @@ extra-source-files:
   .vim.custom
   CHANGELOG.markdown
   README.markdown
-  Warning.hs
 
 source-repository head
   type: git
   location: https://github.com/ekmett/zippers
-
-custom-setup
-  setup-depends:
-    base          >= 4 && < 5,
-    Cabal,
-    cabal-doctest >= 1 && < 1.1
 
 library
   hs-source-dirs: src
@@ -57,17 +50,6 @@ library
   exposed-modules:
     Control.Zipper
     Control.Zipper.Internal
-
-test-suite doctests
-  type:    exitcode-stdio-1.0
-  main-is: doctests.hs
-  default-language: Haskell2010
-  build-depends:
-    base,
-    doctest >= 0.11.1 && < 0.18,
-    zippers
-  ghc-options: -Wall -threaded
-  hs-source-dirs: tests
 
 benchmark zipper
   type:             exitcode-stdio-1.0
