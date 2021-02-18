@@ -43,7 +43,8 @@ library
   build-depends:
     base >= 4.5 && < 5,
     fail == 4.9.*,
-    lens >= 4 && < 5,
+    indexed-traversable >= 0.1.1 && < 0.2,
+    lens >= 4 && < 6,
     profunctors >= 4 && < 6,
     semigroups >= 0.16 && < 1,
     semigroupoids >= 4 && < 6
