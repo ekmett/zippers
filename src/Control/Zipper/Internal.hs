@@ -40,17 +40,19 @@ import Control.Category ((>>>))
 import Control.Monad
 import qualified Control.Monad.Fail as Fail
 import Control.Lens.Getter
-import Control.Lens.Indexed
 import Control.Lens.Internal.Context
 import Control.Lens.Internal.Indexed
 import Control.Lens.Lens
 import Control.Lens.Setter
 import Control.Lens.Traversal
 import Control.Lens.Type
+import Data.Foldable.WithIndex
 import Data.Functor.Apply
+import Data.Functor.WithIndex
 import Data.Maybe
 import Data.Monoid (Last(..))
 import Data.Profunctor.Unsafe
+import Data.Traversable.WithIndex
 
 #if !(MIN_VERSION_base(4,8,0))
 import Data.Foldable
@@ -59,6 +61,10 @@ import Data.Monoid (Monoid(..))
 
 #if !(MIN_VERSION_base(4,11,0))
 import Data.Semigroup (Semigroup(..))
+#endif
+
+#if !MIN_VERSION_lens(5,0,0)
+import qualified Control.Lens.Indexed as Lens
 #endif
 
 -- $setup
@@ -152,6 +158,12 @@ instance TraversableWithIndex i (Jacket i) where
     go (Leaf i a)          = Leaf i <$> f i a
     go Pure                = pure Pure
   {-# INLINE itraverse #-}
+
+#if !MIN_VERSION_lens(5,0,0)
+instance Lens.FunctorWithIndex     i (Jacket i) where imap = imap
+instance Lens.FoldableWithIndex    i (Jacket i) where ifoldMap = ifoldMap
+instance Lens.TraversableWithIndex i (Jacket i) where itraverse = itraverse
+#endif
 
 instance Semigroup (Jacket i a) where
   l <> r = Ap (size l + size r) (nullLeft l && nullLeft r) (nullRight r && nullRight l) (maximal l <> maximal r) l r
