@@ -54,11 +54,6 @@ import Data.Monoid (Last(..))
 import Data.Profunctor.Unsafe
 import Data.Traversable.WithIndex
 
-#if !(MIN_VERSION_base(4,8,0))
-import Data.Foldable
-import Data.Monoid (Monoid(..))
-#endif
-
 #if !(MIN_VERSION_base(4,11,0))
 import Data.Semigroup (Semigroup(..))
 #endif
