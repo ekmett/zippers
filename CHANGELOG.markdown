@@ -1,3 +1,7 @@
+0.3.2 [2021.11.16]
+------------------
+* Drop support for pre-8.0 versions of GHC.
+
 0.3.1 [2021.02.18]
 ------------------
 * Allow building with `lens-5.*`.
