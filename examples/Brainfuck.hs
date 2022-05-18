@@ -20,8 +20,9 @@ import Prelude hiding (Either(..))
 import Control.Lens
 import Control.Zipper
 import Control.Applicative
-import Control.Monad.State
-import Control.Monad.Writer
+import Control.Monad (join, liftM2)
+import Control.Monad.State (StateT, execStateT)
+import Control.Monad.Writer (MonadWriter(..), Writer, execWriter)
 
 import qualified Data.ByteString.Lazy as BS
 import Data.Maybe (fromMaybe, mapMaybe)

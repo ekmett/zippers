@@ -43,7 +43,7 @@ executable zippers-brainfuck
     zippers,
     free       >= 3.0,
     bytestring,
-    mtl        >= 2.0.1 && < 2.3,
+    mtl        >= 2.0.1 && < 2.4,
     streams    >= 3.0
   main-is: Brainfuck.hs
   hs-source-dirs: .
@@ -59,7 +59,7 @@ executable zippers-brainfuck-final
     zippers,
     free       >= 3.0,
     bytestring,
-    mtl        >= 2.0.1 && < 2.3,
+    mtl        >= 2.0.1 && < 2.4,
     streams    >= 3.0
   main-is: BrainfuckFinal.hs
   hs-source-dirs: .
