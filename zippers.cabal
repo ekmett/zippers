@@ -45,7 +45,7 @@ library
     lens >= 4 && < 6,
     profunctors >= 4 && < 6,
     semigroups >= 0.16 && < 1,
-    semigroupoids >= 4 && < 6
+    semigroupoids >= 4 && < 7
   exposed-modules:
     Control.Zipper
     Control.Zipper.Internal
