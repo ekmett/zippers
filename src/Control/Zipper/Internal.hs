@@ -19,6 +19,12 @@
 #define MIN_VERSION_base(x,y,z) 1
 #endif
 
+#ifdef __GLASGOW_HASKELL__
+#if __GLASGOW_HASKELL__ <= 800 && __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE AllowAmbiguousTypes #-}
+#endif
+#endif
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Control.Zipper.Internal
@@ -352,7 +358,8 @@ data Top
 -- unpacked and stored in 'Coil' form. Only one value of type @_ ':>' _@ exists
 -- at any particular time for any particular 'Zipper'.
 
-data Zipper h i a = Ord i => Zipper !(Coil h i a) Int !Int !(Path i a) i a
+data Zipper h i a where
+  Zipper :: Ord i => !(Coil h i a) -> Int -> !Int -> !(Path i a) -> i -> a -> Zipper h i a
 
 -- Top :>> Map String Int :> Int :@ String :>> Bool
 
@@ -389,7 +396,7 @@ type instance Zipped (Zipper h i a) s = Zipped h a
 #ifndef HLINT
 data Coil t i a where
   Coil :: Coil Top Int a
-  Snoc :: Ord i => !(Coil h j s) -> AnIndexedTraversal' i s a -> Int -> !Int -> !(Path j s) -> j -> (Jacket i a -> s) -> Coil (Zipper h j s) i a
+  Snoc :: (Ord i, Ord j) => !(Coil h j s) -> AnIndexedTraversal' i s a -> Int -> !Int -> !(Path j s) -> j -> (Jacket i a -> s) -> Coil (Zipper h j s) i a
 #endif
 
 -- | This 'Lens' views the current target of the 'Zipper'.
@@ -487,6 +494,63 @@ leftmost (Zipper h _ _ p i a) = startl Start (recompress p i a) (error "leftmost
 rightmost :: a :> b:@i -> a :> b:@i
 rightmost (Zipper h _ _ p i a) = startr Start (recompress p i a) (error "rightmost: bad Jacket structure") (\q -> Zipper h (offset q) 0 q)
 {-# INLINE rightmost #-}
+
+data ZipperDirection = ZLeft | ZRight | ZUp | ZDown
+  deriving (Show, Read, Eq, Ord)
+
+-- | A 'Zipper' where all the indexes and values are of type @i@ and @a@.
+class (Zipped h a ~ a, Zipping h a) => UniformZipper i a h where
+  maybeUpward :: MonadPlus m => h :> a:@i -> (forall h'. UniformZipper i a h' => h' :> a:@i -> m r) -> m r
+
+instance UniformZipper i a Top where
+  maybeUpward _ _ = mzero
+
+instance (Ord i, UniformZipper i a h) => UniformZipper i a (Zipper h i a) where
+  maybeUpward z k = k (upward z)
+
+-- | Move in any direction and pass the result to a continuation.
+--
+-- This is useful when you need to act on a zipper based on user input, and
+-- therefore can't specify what the result zipper type would be. Instead, it is
+-- passed to a continuation that can take any (uniform) zipper type. Typically,
+-- the continuation could call this same function again, e.g. in a REPL.
+--
+-- The first parameter is a 'Traversal' for the downward direction.
+--
+-- Note that this only works on @'UniformZipper' Int@.
+pull
+  :: forall h a m r
+   . (UniformZipper Int a h, MonadPlus m)
+  => LensLike' (Indexing (Bazaar' (Indexed Int) a)) a a
+  -> ZipperDirection
+  -> h :>> a
+  -> (forall h'. UniformZipper Int a h' => h' :>> a -> m r)
+  -> m r
+pull trav = ipull (indexing trav)
+
+-- | Move in any direction and pass the result to a continuation.
+--
+-- This is useful when you need to act on a zipper based on user input, and
+-- therefore can't specify what the result zipper type would be. Instead, it is
+-- passed to a continuation that can take any (uniform) zipper type. Typically,
+-- the continuation could call this same function again, e.g. in a REPL.
+--
+-- The first parameter is an 'IndexedTraversal' for the downward direction.
+--
+-- Note that this only works on 'UniformZipper'.
+ipull
+  :: forall h i a m r
+   . (Ord i, UniformZipper i a h, MonadPlus m)
+  => AnIndexedTraversal' i a a
+  -> ZipperDirection
+  -> h :> a:@i
+  -> (forall h'. UniformZipper i a h' => h' :> a:@i -> m r)
+  -> m r
+ipull itrav op z k = case op of
+  ZLeft -> leftward z >>= k
+  ZRight -> rightward z >>= k
+  ZUp -> maybeUpward z k
+  ZDown -> iwithin itrav z >>= k
 
 -- | This allows you to safely 'tug' 'leftward' or 'tug' 'rightward' on a
 -- 'Zipper'. This will attempt the move, and stay where it was if it fails.
