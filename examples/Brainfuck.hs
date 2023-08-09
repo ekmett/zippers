@@ -26,6 +26,8 @@ import Control.Monad.Writer (MonadWriter(..), Writer, execWriter)
 
 import qualified Data.ByteString.Lazy as BS
 import Data.Maybe (fromMaybe, mapMaybe)
+import qualified Data.Stream.Infinite as Stream
+import Data.Stream.Infinite (Stream(..))
 import Data.Word (Word8)
 
 import System.Environment (getArgs)
@@ -82,12 +84,12 @@ bracket cs (x:xs) = over _1 (f x) (bracket cs xs)
 -- * State/Writer-based interpreter
 
 type Cell   = Word8
-type Input  = [Cell]
+type Input  = Stream Cell
 type Output = [Cell]
 type Memory = Top :>> [Cell] :>> Cell -- list zipper
 
 data MachineState = MachineState
-  { _input  :: [Cell]
+  { _input  :: Input
   , _memory :: Memory }
 makeLenses ''MachineState
 
@@ -108,8 +110,8 @@ run (Pred n) = memory.focus -= 1   >> run n
 run (Next n) = memory %= wrapRight >> run n
 run (Prev n) = memory %= wrapLeft  >> run n
 run (Read n) = do
-  memory.focus <~ uses input head
-  input %= tail
+  memory.focus <~ uses input Stream.head
+  input %= Stream.tail
   run n
 run (Write n) = do
   x <- use (memory.focus)
@@ -149,7 +151,7 @@ eval i = mapM_ putByte . interpret i . compile . parse
 -- | EOF is represented as 0
 getInput :: IO Input
 getInput = f <$> BS.getContents
-  where f s = BS.unpack s ++ repeat 0
+  where f s = Stream.prepend (BS.unpack s) noInput
 
 noInput :: Input
-noInput = repeat 0
+noInput = pure 0
